@@ -1,6 +1,6 @@
 ﻿using System.ServiceProcess;
-using JarochosDev.Utilities.NetStandard.Common.Converter;
-using JarochosDev.Utilities.NetStandard.Common.Proxy;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
 using JarochosDev.WindowsActivityTracker.Common;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using JarochosDev.Utilities.NetStandard.ConsoleApp;
-using JarochosDev.Utilities.NetStandard.ConsoleApp.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.ConsoleApp;
+using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Common;
 using Microsoft.Extensions.DependencyInjection;
 

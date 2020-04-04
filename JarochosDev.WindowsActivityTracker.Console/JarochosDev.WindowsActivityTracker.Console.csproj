@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JarochosDev.Utilities.NetStandard.ConsoleApp" Version="1.0.0.1" />
+    <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.ConsoleApp" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
     <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.6.0" />
   </ItemGroup>

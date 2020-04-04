@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using JarochosDev.Utilities.NetStandard.Common.Converter;
-using JarochosDev.Utilities.NetStandard.Common.Proxy;
+﻿using System.ServiceProcess;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
 using JarochosDev.WindowsActivityTracker.Common;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using JarochosDev.Utilities.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.WindowsActivityTracker.Common.Logger;
 using Microsoft.Win32;
 

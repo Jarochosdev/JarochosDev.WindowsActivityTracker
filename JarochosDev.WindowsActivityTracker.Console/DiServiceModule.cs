@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using JarochosDev.Utilities.NetStandard.Common.Converter;
-using JarochosDev.Utilities.NetStandard.ConsoleApp.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Logger;
 using JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters;

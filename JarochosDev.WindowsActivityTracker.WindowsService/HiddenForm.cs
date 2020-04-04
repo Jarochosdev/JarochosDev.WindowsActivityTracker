@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
-using JarochosDev.Utilities.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.WindowsService.Utils;
 using Microsoft.Win32;

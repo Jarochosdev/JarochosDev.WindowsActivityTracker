@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using JarochosDev.WindowsActivityTracker.Common.Logger;
+﻿using JarochosDev.WindowsActivityTracker.Common.Logger;
 
 namespace JarochosDev.WindowsActivityTracker.Common
 {

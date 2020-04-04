@@ -1,5 +1,5 @@
-﻿using JarochosDev.Utilities.NetStandard.Common.Converter;
-using JarochosDev.Utilities.NetStandard.Common.Proxy;
+﻿using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
 using Microsoft.Win32;
 
 namespace JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters

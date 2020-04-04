@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using JarochosDev.Utilities.NetStandard.Common.Converter;
-using JarochosDev.Utilities.NetStandard.Common.Proxy;
 using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Logger;
 using JarochosDev.WindowsActivityTracker.WindowsService.Utils;
 using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Threading;
-using System.Configuration.Install;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
 
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService
