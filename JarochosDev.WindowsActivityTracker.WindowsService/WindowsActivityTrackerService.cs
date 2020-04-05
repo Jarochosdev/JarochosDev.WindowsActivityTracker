@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ServiceProcess;
 using JarochosDev.WindowsActivityTracker.Common;
-using JarochosDev.WindowsActivityTracker.Common.Logger;
 using JarochosDev.WindowsActivityTracker.WindowsService.Utils;
 using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Threading;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
 
 

@@ -1,4 +1,4 @@
-﻿using JarochosDev.WindowsActivityTracker.Common.Logger;
+﻿using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 
 namespace JarochosDev.WindowsActivityTracker.Common
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
-using JarochosDev.WindowsActivityTracker.Common.Logger;
+using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 using Microsoft.Win32;
 
 namespace JarochosDev.WindowsActivityTracker.Common

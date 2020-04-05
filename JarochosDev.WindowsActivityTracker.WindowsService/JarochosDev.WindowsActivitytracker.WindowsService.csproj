@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JarochosDev.Utilities.Net.NetStandard.Common, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JarochosDev.Utilities.Net.NetStandard.Common.1.0.1\lib\netstandard2.0\JarochosDev.Utilities.Net.NetStandard.Common.dll</HintPath>
+      <HintPath>..\packages\JarochosDev.Utilities.Net.NetStandard.Common.1.0.1.1\lib\netstandard2.0\JarochosDev.Utilities.Net.NetStandard.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.SystemEvents, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.SystemEvents.4.6.0\lib\net461\Microsoft.Win32.SystemEvents.dll</HintPath>
