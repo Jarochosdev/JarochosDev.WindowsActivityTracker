@@ -2,15 +2,15 @@
 
 namespace JarochosDev.WindowsActivityTracker.Common.Logger
 {
-    public class FileMessageLogger : IMessageLogger
+    public class TxtFileMessageLogger : IMessageLogger
     {
         public string DirectoryToLog { get; }
-        public string FileName { get; }
+        public string FileNameWithoutExtension { get; }
 
-        public FileMessageLogger(string directoryToLog, string fileName)
+        public TxtFileMessageLogger(string directoryToLog, string fileNameWithoutExtension)
         {
             DirectoryToLog = directoryToLog;
-            FileName = fileName;
+            FileNameWithoutExtension = fileNameWithoutExtension;
         }
 
         public void Log(string message)
@@ -20,7 +20,7 @@ namespace JarochosDev.WindowsActivityTracker.Common.Logger
                 Directory.CreateDirectory(DirectoryToLog);
             }
 
-            var fileNameWithPath = Path.Combine(DirectoryToLog, FileName);
+            var fileNameWithPath = Path.Combine(DirectoryToLog, FileNameWithoutExtension);
             using (StreamWriter w = File.AppendText(fileNameWithPath))
             {
                 w.WriteLine(message);

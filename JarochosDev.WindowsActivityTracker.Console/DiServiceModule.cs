@@ -18,7 +18,7 @@ namespace JarochosDev.WindowsActivityTracker.Console
             var combine = Path.Combine(folderPath, @"JarochosDev\WindowsActivityTracker");
             string fileName = "log.txt";
 
-            var fileTextLogger = new FileMessageLogger(combine, fileName);
+            var fileTextLogger = new TxtFileMessageLogger(combine, fileName);
 
             serviceCollection
                 .AddScoped<IWindowsSystemEventListener, WindowsSystemEventListener>()
@@ -27,7 +27,7 @@ namespace JarochosDev.WindowsActivityTracker.Console
                 .AddScoped<IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent>, PowerModeChangedEventArgsToWindowsSystemEventConverter>()
                 .AddScoped<IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent>, SessionEndedEventArgsToWindowsSystemEventConverter>()
                 .AddScoped<IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent>, SessionSwitchEventArgsToWindowsSystemEventConverter>()
-                .AddScoped<IMessageLogger,FileMessageLogger>(d=> fileTextLogger)
+                .AddScoped<IMessageLogger,TxtFileMessageLogger>(d=> fileTextLogger)
                 .AddScoped<IObserver<IWindowsSystemEvent>>(l => new WindowsServiceEventLoggerObserver(new WindowsServiceMessageLogger("WindowsActivityTracker")))
                 .AddScoped(l => new WindowsServiceMessageLogger("WindowsActivityTracker"));
         }
