@@ -7,7 +7,7 @@ namespace JarochosDev.WindowsActivityTracker.Common.Models
         string EventMessage { get; }
         WindowsSystemEventType Type { get; }
         DateTime DateTime { get; }
-        string UserName { get; set; }
+        string UserName { get; }
         string MachineName { get; }
     }
 }

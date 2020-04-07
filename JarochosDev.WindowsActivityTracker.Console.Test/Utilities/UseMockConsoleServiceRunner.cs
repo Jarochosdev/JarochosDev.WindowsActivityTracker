@@ -6,7 +6,7 @@ using NUnit.Framework.Interfaces;
 
 namespace JarochosDev.WindowsActivityTracker.Console.Test.Utilities
 {
-    public class UseConsoleServiceRunnerMock : Attribute, ITestAction
+    public class UseMockConsoleServiceRunner : Attribute, ITestAction
     {
 
         public void BeforeTest(ITest test)

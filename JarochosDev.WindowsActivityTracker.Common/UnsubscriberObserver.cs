@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("JarochosDev.WindowsActivityTracker.Common.Test")]
 namespace JarochosDev.WindowsActivityTracker.Common
 {
     public class UnsubscriberObserver<T> : IDisposable

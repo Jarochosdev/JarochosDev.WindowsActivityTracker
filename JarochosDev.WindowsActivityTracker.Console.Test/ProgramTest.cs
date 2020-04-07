@@ -11,7 +11,7 @@ namespace JarochosDev.WindowsActivityTracker.Console.Test
     {
 
         [Test]
-        [UseConsoleServiceRunnerMock]
+        [UseMockConsoleServiceRunner]
         public void Test_Program_Calls_ConsoleServiceRunner_RunEndless()
         {
             var mockConsoleServiceRunner = UnitTestUtilities.SingletonService.GetMockSingleton<ConsoleServiceRunner>() as Mock<IConsoleServiceRunner>;

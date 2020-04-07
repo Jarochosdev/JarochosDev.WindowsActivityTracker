@@ -27,9 +27,8 @@ namespace JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters
                 case SessionSwitchReason.RemoteConnect:
                 case SessionSwitchReason.SessionLogon:
                 case SessionSwitchReason.SessionUnlock:
-                    return WindowsSystemEventType.StartWorking;
                 case SessionSwitchReason.SessionRemoteControl:
-                    return WindowsSystemEventType.None;
+                    return WindowsSystemEventType.StartWorking;
                 default:
                     return WindowsSystemEventType.NotImplemented;
             }
