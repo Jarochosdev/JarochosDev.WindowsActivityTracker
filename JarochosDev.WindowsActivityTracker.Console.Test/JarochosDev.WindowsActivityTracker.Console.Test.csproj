@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JarochosDev.TestUtilities.Net.NetStandard" Version="1.0.2" />
+    <PackageReference Include="JarochosDev.TestUtilities.Net.NetStandard" Version="1.0.3" />
     <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.Common" Version="1.0.2" />
     <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.ConsoleApp" Version="1.0.2" />
     <PackageReference Include="nunit" Version="3.12.0" />
