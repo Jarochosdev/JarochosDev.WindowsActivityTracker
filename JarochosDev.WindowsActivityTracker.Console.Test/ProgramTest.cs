@@ -1,6 +1,6 @@
 using System.Linq;
-using JarochosDev.TestUtilities.NetStandard;
-using JarochosDev.Utilities.NetStandard.ConsoleApp;
+using JarochosDev.TestUtilities.Net.NetStandard;
+using JarochosDev.Utilities.Net.NetStandard.ConsoleApp;
 using JarochosDev.WindowsActivityTracker.Console.Test.Utilities;
 using Moq;
 using NUnit.Framework;

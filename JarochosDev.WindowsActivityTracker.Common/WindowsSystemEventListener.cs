@@ -11,18 +11,16 @@ namespace JarochosDev.WindowsActivityTracker.Common
         public IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent> PowerModeToSystemEventConverter { get; }
         public IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent> SessionEndedToSystemEventConverter { get; }
         public IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent> SessionSwitchToSystemEventConverter { get; }
-        public WindowsServiceMessageLogger WindowsServiceMessageLogger { get; }
-
-        private List<IObserver<IWindowsSystemEvent>> _observers;
+     
+        private readonly List<IObserver<IWindowsSystemEvent>> _observers;
         private bool _isStarted;
         internal IReadOnlyCollection<IObserver<IWindowsSystemEvent>> Observers => _observers.AsReadOnly();
-        public WindowsSystemEventListener(IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent> powerModeToSystemEventConverter, IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent> sessionEndedToSystemEventConverter, IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent> sessionSwitchToSystemEventConverter, WindowsServiceMessageLogger windowsServiceMessageLogger)
+        public WindowsSystemEventListener(IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent> powerModeToSystemEventConverter, IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent> sessionEndedToSystemEventConverter, IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent> sessionSwitchToSystemEventConverter)
         {
             _observers = new List<IObserver<IWindowsSystemEvent>>();
             PowerModeToSystemEventConverter = powerModeToSystemEventConverter;
             SessionEndedToSystemEventConverter = sessionEndedToSystemEventConverter;
             SessionSwitchToSystemEventConverter = sessionSwitchToSystemEventConverter;
-            WindowsServiceMessageLogger = windowsServiceMessageLogger;
         }
 
         public IDisposable Subscribe(IObserver<IWindowsSystemEvent> observer)
@@ -39,11 +37,9 @@ namespace JarochosDev.WindowsActivityTracker.Common
         {
             if (!_isStarted)
             {
-                WindowsServiceMessageLogger.Log("Starting Listening Start");
                 SystemEvents.PowerModeChanged += OnPowerModeChange;
                 SystemEvents.SessionSwitch += OnSessionSwitch;
                 SystemEvents.SessionEnded += OnSessionEnded;
-                WindowsServiceMessageLogger.Log("Starting Listening Done");
             }
         }
 
@@ -57,26 +53,20 @@ namespace JarochosDev.WindowsActivityTracker.Common
 
         private void OnSessionEnded(object sender, SessionEndedEventArgs e)
         {
-            WindowsServiceMessageLogger.Log("On Session Ended Start");
             var windowsSystemEvent = SessionEndedToSystemEventConverter.Convert(e);
             NotifyObservers(windowsSystemEvent);
-            WindowsServiceMessageLogger.Log("On Session Ended Done");
         }
 
         private void OnSessionSwitch(object sender, SessionSwitchEventArgs e)
         {
-            WindowsServiceMessageLogger.Log("On Session Switch start");
             var windowsSystemEvent = SessionSwitchToSystemEventConverter.Convert(e);
             NotifyObservers(windowsSystemEvent);
-            WindowsServiceMessageLogger.Log("On Session Switch Done");
         }
 
         private void OnPowerModeChange(object sender, PowerModeChangedEventArgs e)
         {
-            WindowsServiceMessageLogger.Log("On Power Start");
             var windowsSystemEvent = PowerModeToSystemEventConverter.Convert(e);
             NotifyObservers(windowsSystemEvent);
-            WindowsServiceMessageLogger.Log("On Power Done");
         }
 
         public void Stop()

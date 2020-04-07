@@ -20,7 +20,7 @@ namespace JarochosDev.WindowsActivityTracker.Console
         protected override void StartService(IServiceProvider serviceProvider)
         {
             _windowsServiceListener = serviceProvider.GetService<IWindowsSystemEventListener>();
-            var observers = serviceProvider.GetServices<IObserver<IWindowsSystemEvent>>();
+            var observers = serviceProvider.GetService<List<IObserver<IWindowsSystemEvent>>>();
             foreach (var observer in observers)
             {
                 _subscribedItems.Add(_windowsServiceListener.Subscribe(observer));

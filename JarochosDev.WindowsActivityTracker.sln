@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JarochosDev.WindowsActivity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JarochosDev.WindowsActivitytracker.WindowsService", "JarochosDev.WindowsActivitytracker.WindowsService\JarochosDev.WindowsActivitytracker.WindowsService.csproj", "{470670AA-FB13-419B-8913-600597867813}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet Packages", "NuGet Packages", "{712A8178-9F12-40DC-8B3F-E7D2989A76E1}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet Packages\JarochosDev.Utilities.Net.NetStandard.Common.1.0.2.nupkg = NuGet Packages\JarochosDev.Utilities.Net.NetStandard.Common.1.0.2.nupkg
+		NuGet Packages\JarochosDev.Utilities.Net.NetStandard.ConsoleApp.1.0.2.nupkg = NuGet Packages\JarochosDev.Utilities.Net.NetStandard.ConsoleApp.1.0.2.nupkg
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JarochosDev.WindowsActivityTracker.Console.Test", "JarochosDev.WindowsActivityTracker.Console.Test\JarochosDev.WindowsActivityTracker.Console.Test.csproj", "{4CE84F98-2F3D-4127-A4AD-17C2939E1B25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +35,10 @@ Global
 		{470670AA-FB13-419B-8913-600597867813}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{470670AA-FB13-419B-8913-600597867813}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{470670AA-FB13-419B-8913-600597867813}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CE84F98-2F3D-4127-A4AD-17C2939E1B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE84F98-2F3D-4127-A4AD-17C2939E1B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CE84F98-2F3D-4127-A4AD-17C2939E1B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CE84F98-2F3D-4127-A4AD-17C2939E1B25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

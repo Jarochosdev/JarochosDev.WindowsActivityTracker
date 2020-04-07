@@ -3,11 +3,11 @@ using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 
 namespace JarochosDev.WindowsActivityTracker.Common
 {
-    public class WindowsServiceEventLoggerObserver : IWindowsServiceEventLogger
+    public class TextMessageEventLoggerObserver : IWindowsServiceEventLogger
     {
         public IMessageLogger MessageLogger { get; }
 
-        public WindowsServiceEventLoggerObserver(IMessageLogger messageLogger)
+        public TextMessageEventLoggerObserver(IMessageLogger messageLogger)
         {
             MessageLogger = messageLogger;
         }

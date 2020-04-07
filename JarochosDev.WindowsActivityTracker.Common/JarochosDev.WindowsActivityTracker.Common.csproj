@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.Common" Version="1.0.1.1" />
+    <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.Common" Version="1.0.2" />
     <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.6.0" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="4.6.0" />
   </ItemGroup>

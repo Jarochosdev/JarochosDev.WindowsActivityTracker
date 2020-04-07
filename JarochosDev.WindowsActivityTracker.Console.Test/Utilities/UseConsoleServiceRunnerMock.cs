@@ -1,6 +1,6 @@
 using System;
-using JarochosDev.TestUtilities.NetStandard;
-using JarochosDev.Utilities.NetStandard.ConsoleApp;
+using JarochosDev.TestUtilities.Net.NetStandard;
+using JarochosDev.Utilities.Net.NetStandard.ConsoleApp;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 

@@ -15,7 +15,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
         static void Main()
         {
             var windowsServiceTextLogger = new WindowsServiceMessageLogger("WindowsActivityTrackerService");
-            var windowsServiceEventLoggerObserver = new WindowsServiceEventLoggerObserver(windowsServiceTextLogger);
+            var windowsServiceEventLoggerObserver = new TextMessageEventLoggerObserver(windowsServiceTextLogger);
             var windowsActivityTrackerService = new WindowsActivityTrackerService(
                 new SessionChangeToWindowsSystemEvent(), 
                 new PowerBroadcastToWindowsSystemEvent(), 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
@@ -14,22 +15,17 @@ namespace JarochosDev.WindowsActivityTracker.Console
     {
         public void Register(IServiceCollection serviceCollection)
         {
-            var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var combine = Path.Combine(folderPath, @"JarochosDev\WindowsActivityTracker");
-            string fileName = "log.txt";
-
-            var fileTextLogger = new TxtFileMessageLogger(combine, fileName);
+            var observers = new List<IObserver<IWindowsSystemEvent>>()
+            {
+                new TextMessageEventLoggerObserver(new WindowsServiceMessageLogger(AppConstants.LOGGING_APPLICATION_NAME))
+            };
 
             serviceCollection
                 .AddScoped<IWindowsSystemEventListener, WindowsSystemEventListener>()
-                .AddScoped<IObserver<IWindowsSystemEvent>, DatabaseSystemEventObserver >()
-                .AddScoped<IDatabaseWritableRepository<IWindowsSystemEvent>, DatabaseRepository>()
                 .AddScoped<IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent>, PowerModeChangedEventArgsToWindowsSystemEventConverter>()
                 .AddScoped<IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent>, SessionEndedEventArgsToWindowsSystemEventConverter>()
                 .AddScoped<IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent>, SessionSwitchEventArgsToWindowsSystemEventConverter>()
-                .AddScoped<IMessageLogger,TxtFileMessageLogger>(d=> fileTextLogger)
-                .AddScoped<IObserver<IWindowsSystemEvent>>(l => new WindowsServiceEventLoggerObserver(new WindowsServiceMessageLogger("WindowsActivityTracker")))
-                .AddScoped(l => new WindowsServiceMessageLogger("WindowsActivityTracker"));
+                .AddScoped(o => observers);
         }
     }
 }
