@@ -9,6 +9,7 @@ using System.Threading;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService
@@ -85,10 +86,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
         {
             var windowsSystemEvent = new WindowsSystemEvent(
                 $"SessionShutDownEvent:None",
-                WindowsSystemEventType.StopWorking,
-                ProxyDateTime.Instance().Now(),
-                ProxyEnvironment.Instance().UserName,
-                ProxyEnvironment.Instance().MachineName);
+                WindowsSystemEventType.StopWorking);
 
             NotifyObservers(windowsSystemEvent);
             base.OnShutdown();
@@ -112,7 +110,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
                 _observers.Add(observer);
             }
 
-            var unsubscriber = new Unsubscriber<IWindowsSystemEvent>(_observers, observer);
+            var unsubscriber = new UnsubscriberObserver<IWindowsSystemEvent>(_observers, observer);
             _disposables.Add(unsubscriber);
 
             return unsubscriber;

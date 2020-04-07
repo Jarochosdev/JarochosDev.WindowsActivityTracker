@@ -4,6 +4,7 @@ using JarochosDev.TestUtilities.Net.NetStandard;
 using JarochosDev.Utilities.Net.NetStandard.ConsoleApp;
 using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;

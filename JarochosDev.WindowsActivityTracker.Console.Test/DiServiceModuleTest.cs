@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.Models;
+using JarochosDev.WindowsActivityTracker.Common.Observers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 

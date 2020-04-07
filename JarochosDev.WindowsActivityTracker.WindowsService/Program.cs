@@ -2,6 +2,7 @@
 using System.ServiceProcess;
 using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.Observers;
 using JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters;
 using JarochosDev.WindowsActivityTracker.WindowsService.Converters;
 

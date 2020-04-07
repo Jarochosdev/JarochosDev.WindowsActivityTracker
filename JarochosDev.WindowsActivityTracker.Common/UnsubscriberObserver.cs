@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace JarochosDev.WindowsActivityTracker.Common
 {
-    public class Unsubscriber<T> : IDisposable
+    public class UnsubscriberObserver<T> : IDisposable
     {
-        private List<IObserver<T>> _observers;
+        private readonly List<IObserver<T>> _observers;
         internal IReadOnlyCollection<IObserver<T>> ReadOnlyObservers => _observers.AsReadOnly();
         internal IObserver<T> ObserverToUnsubscribe { get; }
-        public Unsubscriber(List<IObserver<T>> observers, IObserver<T> observerToUnsubscribe)
+        public UnsubscriberObserver(List<IObserver<T>> observers, IObserver<T> observerToUnsubscribe)
         {
             _observers = observers;
             ObserverToUnsubscribe = observerToUnsubscribe;

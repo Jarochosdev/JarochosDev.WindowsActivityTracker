@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JarochosDev.WindowsActivityTracker.Common
+namespace JarochosDev.WindowsActivityTracker.Common.Models
 {
     public interface IWindowsSystemEvent
     {

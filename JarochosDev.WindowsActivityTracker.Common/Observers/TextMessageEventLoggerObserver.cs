@@ -1,9 +1,10 @@
 ﻿using System;
 using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 
-namespace JarochosDev.WindowsActivityTracker.Common
+namespace JarochosDev.WindowsActivityTracker.Common.Observers
 {
-    public class TextMessageEventLoggerObserver : IWindowsServiceEventLogger
+    public class TextMessageEventLoggerObserver : IObserver<IWindowsSystemEvent>
     {
         public IMessageLogger MessageLogger { get; }
 
@@ -33,9 +34,5 @@ namespace JarochosDev.WindowsActivityTracker.Common
 
             MessageLogger.Log(text);
         }
-    }
-
-    public interface IWindowsServiceEventLogger : IObserver<IWindowsSystemEvent>
-    {
     }
 }

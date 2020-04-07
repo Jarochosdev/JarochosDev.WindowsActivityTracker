@@ -1,5 +1,6 @@
 ﻿using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 using Microsoft.Win32;
 
 namespace JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters
@@ -10,7 +11,7 @@ namespace JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters
         {
             var windowsSystemEventType = GetWindowsSystemEventType(sessionSwitchEventArgs.Reason);
             var eventMessage = $"SessionEndedEvent:{sessionSwitchEventArgs.Reason}";
-            return new WindowsSystemEvent(eventMessage, windowsSystemEventType, ProxyDateTime.Instance().Now(), ProxyEnvironment.Instance().UserName, ProxyEnvironment.Instance().MachineName);
+            return new WindowsSystemEvent(eventMessage, windowsSystemEventType);
         }
 
         private WindowsSystemEventType GetWindowsSystemEventType(SessionEndReasons reason)

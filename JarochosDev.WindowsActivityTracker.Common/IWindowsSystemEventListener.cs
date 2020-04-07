@@ -1,4 +1,5 @@
 ﻿using System;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 
 namespace JarochosDev.WindowsActivityTracker.Common
 {

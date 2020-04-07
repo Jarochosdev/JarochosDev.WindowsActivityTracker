@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using JarochosDev.Utilities.Net.NetStandard.ConsoleApp;
 using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JarochosDev.WindowsActivityTracker.Console

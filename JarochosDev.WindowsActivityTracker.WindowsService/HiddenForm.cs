@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.WindowsService.Utils;
 using Microsoft.Win32;
 
@@ -52,13 +53,13 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
 
         private void SystemEventsOnTimeChanged(object sender, EventArgs e)
         {
-            var windowsSystemEvent = new WindowsSystemEvent("the time change", WindowsSystemEventType.None, DateTime.Now, "", "");
+            var windowsSystemEvent = new WindowsSystemEvent("the time change", WindowsSystemEventType.None);
             NotifyObservers(windowsSystemEvent);
         }
 
         private void SystemEventsOnSessionEnding(object sender, SessionEndingEventArgs e)
         {
-            var windowsSystemEvent = new WindowsSystemEvent($"SystemEventSessionending:{e.Reason}", WindowsSystemEventType.None, DateTime.Now, "", "");
+            var windowsSystemEvent = new WindowsSystemEvent($"SystemEventSessionending:{e.Reason}", WindowsSystemEventType.None);
             NotifyObservers(windowsSystemEvent);
         }
 
@@ -136,7 +137,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
                 _observers.Add(observer);
             }
 
-            var unsubscriber = new Unsubscriber<IWindowsSystemEvent>(_observers, observer);
+            var unsubscriber = new UnsubscriberObserver<IWindowsSystemEvent>(_observers, observer);
             _disposables.Add(unsubscriber);
 
             return unsubscriber;

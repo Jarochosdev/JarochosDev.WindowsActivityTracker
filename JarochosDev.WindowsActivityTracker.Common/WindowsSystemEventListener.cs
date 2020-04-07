@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 using Microsoft.Win32;
 
 namespace JarochosDev.WindowsActivityTracker.Common
@@ -30,7 +31,7 @@ namespace JarochosDev.WindowsActivityTracker.Common
                 _observers.Add(observer);
             }
 
-            return new Unsubscriber<IWindowsSystemEvent>(_observers, observer);
+            return new UnsubscriberObserver<IWindowsSystemEvent>(_observers, observer);
         }
 
         public void Start()

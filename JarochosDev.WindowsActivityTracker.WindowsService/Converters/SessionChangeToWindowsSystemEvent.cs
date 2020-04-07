@@ -2,6 +2,7 @@
 using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters
 {
@@ -11,8 +12,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters
         {
             var windowsSystemEventType = GetWindowsSystemEventType(item.Reason);
             var eventMessage = $"SessionChangeEvent:{item.Reason}";
-            return new WindowsSystemEvent(eventMessage, windowsSystemEventType, ProxyDateTime.Instance().Now(),
-                ProxyEnvironment.Instance().UserName, ProxyEnvironment.Instance().MachineName);
+            return new WindowsSystemEvent(eventMessage, windowsSystemEventType);
         }
 
         private WindowsSystemEventType GetWindowsSystemEventType(SessionChangeReason reason)

@@ -5,6 +5,8 @@ using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
 using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
 using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.Models;
+using JarochosDev.WindowsActivityTracker.Common.Observers;
 using JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
