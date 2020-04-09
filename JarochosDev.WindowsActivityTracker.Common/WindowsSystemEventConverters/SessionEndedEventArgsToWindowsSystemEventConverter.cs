@@ -1,5 +1,4 @@
-﻿using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
-using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
+﻿using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using Microsoft.Win32;
 

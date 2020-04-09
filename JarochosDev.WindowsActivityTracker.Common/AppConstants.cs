@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace JarochosDev.WindowsActivityTracker.Common
+﻿namespace JarochosDev.WindowsActivityTracker.Common
 {
     public static class AppConstants
     {

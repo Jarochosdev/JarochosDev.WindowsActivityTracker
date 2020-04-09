@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
-using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
-using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
-using JarochosDev.WindowsActivityTracker.Common;
+using System.Linq;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
+using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.Loggers;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Observers;
 using JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 
-namespace JarochosDev.WindowsActivityTracker.Console
+namespace JarochosDev.WindowsActivityTracker.Common.DependencyInjection
 {
-    public class DiServiceModule : IServiceModule
+    public class DiCoreServiceModule : IServiceModule
     {
         public void Register(IServiceCollection serviceCollection)
         {
@@ -24,10 +23,11 @@ namespace JarochosDev.WindowsActivityTracker.Console
 
             serviceCollection
                 .AddScoped<IWindowsSystemEventListener, WindowsSystemEventListener>()
+                .AddScoped<IWindowsSystemEventServiceManager, WindowsSystemEventServiceManager>()
                 .AddScoped<IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent>, PowerModeChangedEventArgsToWindowsSystemEventConverter>()
                 .AddScoped<IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent>, SessionEndedEventArgsToWindowsSystemEventConverter>()
                 .AddScoped<IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent>, SessionSwitchEventArgsToWindowsSystemEventConverter>()
-                .AddScoped(o => observers);
+                .AddScoped<IEnumerable<IObserver<IWindowsSystemEvent>>>(o => observers);
         }
     }
 }

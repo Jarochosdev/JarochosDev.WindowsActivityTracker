@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using JarochosDev.Utilities.Net.NetStandard.ConsoleApp;
-using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.Services;
+using JarochosDev.WindowsActivityTracker.Common.DependencyInjection;
 
 namespace JarochosDev.WindowsActivityTracker.Console
 {
@@ -8,8 +9,8 @@ namespace JarochosDev.WindowsActivityTracker.Console
     {
         public static void Main(string[] args)
         {
-            var dependencyInjectionModules = new List<IServiceModule>(){new DiServiceModule()};
-            ConsoleServiceRunner.Instance().RunEndless(new ConsoleWindowsActivityTrackerService(dependencyInjectionModules));
+            var dependencyInjectionModules = new List<IServiceModule>(){new DiCoreServiceModule()};
+            ServiceRunner.Instance().RunEndless(new ConsoleWindowsActivityTrackerService(dependencyInjectionModules));
         }
     }
 }

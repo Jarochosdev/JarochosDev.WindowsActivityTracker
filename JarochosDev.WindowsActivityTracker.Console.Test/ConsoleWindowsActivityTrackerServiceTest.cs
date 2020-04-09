@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using JarochosDev.TestUtilities.Net.NetStandard;
-using JarochosDev.Utilities.Net.NetStandard.ConsoleApp;
-using JarochosDev.Utilities.Net.NetStandard.ConsoleApp.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.Services;
 using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 
@@ -26,7 +25,7 @@ namespace JarochosDev.WindowsActivityTracker.Console.Test
         [Test]
         public void Test_Implements()
         {
-            Assert.IsInstanceOf(typeof(AbstractConsoleService), _consoleWindowsActivityTrackerService);
+            Assert.IsInstanceOf(typeof(AbstractService), _consoleWindowsActivityTrackerService);
         }
 
         [Test]
@@ -36,84 +35,50 @@ namespace JarochosDev.WindowsActivityTracker.Console.Test
         }
 
         [Test]
-        public void Test_StartService_SubscribeAllObserversInServiceProvider_To_WindowsServiceListener_And_Start()
+        public void Test_StartService_Request_WindowsSystemEventServiceManager_And_StartProcess()
         {
             var mockServiceProvider = new Mock<IServiceProvider>();
-            var mockWindowsSystemEventListener = new Mock<IWindowsSystemEventListener>();
-
+       
+            var mockWindowsSystemEventServiceManager = new Mock<IWindowsSystemEventServiceManager>();
             mockServiceProvider
-                .Setup(p => p.GetService(typeof(IWindowsSystemEventListener)))
-                .Returns(mockWindowsSystemEventListener.Object);
-
-            var mockObserverWindowsSystemEvent1 = new Mock<IObserver<IWindowsSystemEvent>>();
-            var mockObserverWindowsSystemEvent2 = new Mock<IObserver<IWindowsSystemEvent>>();
-
-            var observers = new List<IObserver<IWindowsSystemEvent>>()
-            {
-                mockObserverWindowsSystemEvent1.Object,
-                mockObserverWindowsSystemEvent2.Object
-            };
-            
-            mockServiceProvider
-                .Setup(p => p.GetService(typeof(List<IObserver<IWindowsSystemEvent>>)))
-                .Returns(observers);
+                .Setup(p => p.GetService(typeof(IWindowsSystemEventServiceManager)))
+                .Returns(mockWindowsSystemEventServiceManager.Object);
 
             UnitTestUtilities
                 .Helper
                 .RunProtectedMethod<ConsoleWindowsActivityTrackerService>
                     (_consoleWindowsActivityTrackerService, "StartService", mockServiceProvider.Object);
 
-            mockWindowsSystemEventListener.Verify(e=>e.Subscribe(mockObserverWindowsSystemEvent1.Object), Times.Once);
-            mockWindowsSystemEventListener.Verify(e=>e.Subscribe(mockObserverWindowsSystemEvent2.Object), Times.Once);
-            mockWindowsSystemEventListener.Verify(e=>e.Start(), Times.Once);
-            mockWindowsSystemEventListener.Verify(l => l.Stop(), Times.Never);
+            mockWindowsSystemEventServiceManager.Verify(e=>e.Start(), Times.Once);
+            mockWindowsSystemEventServiceManager.Verify(l => l.Stop(), Times.Never);
         }
 
         [Test]
-        public void Test_StopService_Dispose_SubscribedObservers_And_StopListener()
+        public void Test_StopService_Calls_ServiceManagerRequestOnStart_ToBe_Stop()
         {
             var mockServiceProvider = new Mock<IServiceProvider>();
-            var mockWindowsSystemEventListener = new Mock<IWindowsSystemEventListener>();
 
+            var mockWindowsSystemEventServiceManager = new Mock<IWindowsSystemEventServiceManager>();
             mockServiceProvider
-                .Setup(p => p.GetService(typeof(IWindowsSystemEventListener)))
-                .Returns(mockWindowsSystemEventListener.Object);
-
-
-            var mockObserverWindowsSystemEvent1 = new Mock<IObserver<IWindowsSystemEvent>>();
-            var mockObserverWindowsSystemEvent2 = new Mock<IObserver<IWindowsSystemEvent>>();
-
-            var observers = new List<IObserver<IWindowsSystemEvent>>()
-            {
-                mockObserverWindowsSystemEvent1.Object,
-                mockObserverWindowsSystemEvent2.Object
-            };
-
-            mockServiceProvider
-                .Setup(p => p.GetService(typeof(List<IObserver<IWindowsSystemEvent>>)))
-                .Returns(observers);
-
-            var mockSubscribedItem1 = new Mock<IDisposable>();
-            var mockSubscribedItem2 = new Mock<IDisposable>();
-            
-            mockWindowsSystemEventListener.Setup(l => l.Subscribe(mockObserverWindowsSystemEvent1.Object))
-                .Returns(mockSubscribedItem1.Object);
-
-            mockWindowsSystemEventListener.Setup(l => l.Subscribe(mockObserverWindowsSystemEvent2.Object))
-                .Returns(mockSubscribedItem2.Object);
+                .Setup(p => p.GetService(typeof(IWindowsSystemEventServiceManager)))
+                .Returns(mockWindowsSystemEventServiceManager.Object);
 
             UnitTestUtilities
                 .Helper
-                .RunProtectedMethod<ConsoleWindowsActivityTrackerService>(_consoleWindowsActivityTrackerService, "StartService", mockServiceProvider.Object);
+                .RunProtectedMethod<ConsoleWindowsActivityTrackerService>
+                    (_consoleWindowsActivityTrackerService, "StartService", mockServiceProvider.Object);
+
+            mockWindowsSystemEventServiceManager.Verify(e => e.Start(), Times.Once);
+            mockWindowsSystemEventServiceManager.Verify(l => l.Stop(), Times.Never);
+            mockWindowsSystemEventServiceManager.Reset();
 
             UnitTestUtilities
                 .Helper
-                .RunProtectedMethod<ConsoleWindowsActivityTrackerService>(_consoleWindowsActivityTrackerService, "StopService", mockServiceProvider.Object);
+                .RunProtectedMethod<ConsoleWindowsActivityTrackerService>
+                    (_consoleWindowsActivityTrackerService, "StopService", mockServiceProvider.Object);
 
-            mockSubscribedItem1.Verify(s=>s.Dispose());
-            mockSubscribedItem2.Verify(s=>s.Dispose());
-
-            mockWindowsSystemEventListener.Verify(l=>l.Stop(), Times.Once);
+            mockWindowsSystemEventServiceManager.Verify(e => e.Start(), Times.Never);
+            mockWindowsSystemEventServiceManager.Verify(l => l.Stop(), Times.Once);
         }
     }
 }

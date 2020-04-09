@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using JarochosDev.TestUtilities.Net.NetStandard;
-using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
+using JarochosDev.Utilities.Net.NetStandard.Common.Proxies;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Test.Utilities;
 using Moq;

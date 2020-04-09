@@ -1,5 +1,5 @@
 ﻿using System;
-using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
+using JarochosDev.Utilities.Net.NetStandard.Common.Proxies;
 
 namespace JarochosDev.WindowsActivityTracker.Common.Models
 {

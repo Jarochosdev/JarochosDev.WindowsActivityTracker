@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using JarochosDev.WindowsActivityTracker.Common.Models;
+﻿using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters;
 using Microsoft.Win32;
 using NUnit.Framework;

@@ -1,83 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceProcess;
-using JarochosDev.WindowsActivityTracker.Common;
-using JarochosDev.WindowsActivityTracker.WindowsService.Utils;
-using Microsoft.Win32;
-using System.Windows.Forms;
-using System.Threading;
-using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
-using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
-using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
+using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.WindowsServices;
 using JarochosDev.WindowsActivityTracker.Common.Models;
+using JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner;
+using JarochosDev.WindowsActivityTracker.WindowsService.Converters;
+using JarochosDev.WindowsActivityTracker.WindowsService.Utils;
 
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService
 {
-    partial class WindowsActivityTrackerService : ServiceBase
+    partial class WindowsActivityTrackerService : DebuggableServiceBase
     {
-        public IObjectConverter<SessionChangeDescription, IWindowsSystemEvent> SessionChangeToWindowsSystemConverter { get; }
-        public IObjectConverter<PowerBroadcastStatus, IWindowsSystemEvent> PowerBroadcastToWindowsSystemConverter { get; }
-        public IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent> SessionEndedToWindowsSystemConverter { get; }
-        public IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent> PowerModeToWindowsSystemConverter { get; }
-        public IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent> SessionSwitchToWindowsSystemConverter { get; }
-        public IMessageLogger MessageLogger { get; }
-        private List<IDisposable> _disposables;
-        private List<IObserver<IWindowsSystemEvent>> _observers;
-        private HiddenForm _hiddenForm;
-        internal IReadOnlyCollection<IObserver<IWindowsSystemEvent>> Observers => _observers.AsReadOnly();
-        internal IReadOnlyCollection<IDisposable> Unsubscribers => _disposables.AsReadOnly();
-        public WindowsActivityTrackerService(
-            IObjectConverter<SessionChangeDescription, IWindowsSystemEvent> sessionChangeToWindowsSystemConverter,
-            IObjectConverter<PowerBroadcastStatus, IWindowsSystemEvent> powerBroadcastToWindowsSystemConverter,
-            IObjectConverter<SessionEndedEventArgs, IWindowsSystemEvent> sessionEndedToWindowsSystemConverter,
-            IObjectConverter<PowerModeChangedEventArgs, IWindowsSystemEvent> powerModeToWindowsSystemConverter,
-            IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent> sessionSwitchToWindowsSystemConverter,
-                IMessageLogger messageLogger)
+        private IThreadApplicationRunnerProcess _process;
+        public IServiceModule CoreServiceModule { get; }
+        public IServiceModule WindowsServiceModule { get; }
+
+        public IServiceProviderBuilder ServiceProviderBuilder { get; }
+        public PowerBroadcastToWindowsSystemEvent PowerBroadcastToWindowsSystemEvent { get; }
+        public SessionChangeToWindowsSystemEvent SessionChangeToWindowsSystemEvent { get; }
+        public IEnumerable<IObserver<IWindowsSystemEvent>> WindowsSystemEventObservers { get; }
+
+        public WindowsActivityTrackerService(IServiceModule coreServiceModule, 
+            IServiceModule windowsServiceModule, 
+            IServiceProviderBuilder serviceProviderBuilder, 
+            PowerBroadcastToWindowsSystemEvent powerBroadcastToWindowsSystemEvent, 
+            SessionChangeToWindowsSystemEvent sessionChangeToWindowsSystemEvent, 
+            IEnumerable<IObserver<IWindowsSystemEvent>> windowsSystemEventObservers)
         {
-            SessionChangeToWindowsSystemConverter = sessionChangeToWindowsSystemConverter;
-            PowerBroadcastToWindowsSystemConverter = powerBroadcastToWindowsSystemConverter;
-            SessionEndedToWindowsSystemConverter = sessionEndedToWindowsSystemConverter;
-            PowerModeToWindowsSystemConverter = powerModeToWindowsSystemConverter;
-            SessionSwitchToWindowsSystemConverter = sessionSwitchToWindowsSystemConverter;
-            MessageLogger = messageLogger;
-            InitializeComponent();
-
-            _observers = new List<IObserver<IWindowsSystemEvent>>();
-            _disposables = new List<IDisposable>();
-
-            _hiddenForm = new HiddenForm(SessionEndedToWindowsSystemConverter, PowerModeToWindowsSystemConverter, SessionSwitchToWindowsSystemConverter);
+            CoreServiceModule = coreServiceModule;
+            WindowsServiceModule = windowsServiceModule;
+            ServiceProviderBuilder = serviceProviderBuilder;
+            PowerBroadcastToWindowsSystemEvent = powerBroadcastToWindowsSystemEvent;
+            SessionChangeToWindowsSystemEvent = sessionChangeToWindowsSystemEvent;
+            WindowsSystemEventObservers = windowsSystemEventObservers;
         }
 
-     
         protected override void OnStart(string[] args)
         {
-            MessageLogger.Log("ServiceStarted");
-            new Thread(() => Application.Run(_hiddenForm)).Start();
+            ServiceProviderBuilder.AddServiceModule(CoreServiceModule);
+            ServiceProviderBuilder.AddServiceModule(WindowsServiceModule);
+            var serviceProvider = ServiceProviderBuilder.Build();
+
+            _process = serviceProvider.GetService(typeof(IThreadApplicationRunnerProcess)) as IThreadApplicationRunnerProcess;
+            _process.Start();
         }
 
         protected override void OnStop()
         {
-            MessageLogger.Log("ServiceStop Start");
-            foreach (var disposable in _disposables)
-            {
-                disposable.Dispose();
-            }
-            _hiddenForm.Close();
-            MessageLogger.Log("ServiceStop Done");
-            Application.Exit();
+            _process.Stop();
         }
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
         {
-            var windowsSystemEvent = SessionChangeToWindowsSystemConverter.Convert(changeDescription);
+            var windowsSystemEvent = SessionChangeToWindowsSystemEvent.Convert(changeDescription);
             NotifyObservers(windowsSystemEvent);
             base.OnSessionChange(changeDescription);
         }
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
         {
-            var windowsSystemEvent = PowerBroadcastToWindowsSystemConverter.Convert(powerStatus);
+            var windowsSystemEvent = PowerBroadcastToWindowsSystemEvent.Convert(powerStatus);
             NotifyObservers(windowsSystemEvent);
             return base.OnPowerEvent(powerStatus);
         }
@@ -94,37 +78,16 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
 
         private void NotifyObservers(IWindowsSystemEvent windowsSystemEvent)
         {
-            windowsSystemEvent.UserName = Machine.Instance().GetUsername();
-            _observers.ForEach(o =>
+            //windowsSystemEvent.UserName = Machine.Instance().GetUsername();
+            foreach (var windowsSystemEventObserver in WindowsSystemEventObservers)
             {
-                o.OnNext(windowsSystemEvent);
-            });
-        }
-
-        public IDisposable Subscribe(IObserver<IWindowsSystemEvent> observer)
-        {
-            _hiddenForm.Subscribe(observer);
-
-            if (!_observers.Contains(observer))
-            {
-                _observers.Add(observer);
+                windowsSystemEventObserver.OnNext(windowsSystemEvent);
             }
-
-            var unsubscriber = new UnsubscriberObserver<IWindowsSystemEvent>(_observers, observer);
-            _disposables.Add(unsubscriber);
-
-            return unsubscriber;
         }
 
         internal void OnStartDebug(string[] args)
         {
             this.OnStart(args);
-            Console.ReadLine();
-            while (true)
-            {
-                
-            }
-            this.OnStop();
         }
     }
 }

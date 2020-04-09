@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
-using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
+﻿using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Observers;
 using JarochosDev.WindowsActivityTracker.Common.Test.Fakes;

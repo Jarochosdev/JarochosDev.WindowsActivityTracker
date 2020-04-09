@@ -1,45 +1,31 @@
 ﻿using System;
-using System.ServiceProcess;
-using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
+using System.Collections.Generic;
+using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
+using JarochosDev.Utilities.Net.NetStandard.Common.Loggers;
+using JarochosDev.Utilities.Net.NetStandard.Common.WindowsServices;
 using JarochosDev.WindowsActivityTracker.Common;
+using JarochosDev.WindowsActivityTracker.Common.DependencyInjection;
+using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Observers;
-using JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters;
 using JarochosDev.WindowsActivityTracker.WindowsService.Converters;
+using JarochosDev.WindowsActivityTracker.WindowsService.DependencyInjection;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         static void Main()
         {
-            var windowsServiceTextLogger = new WindowsServiceMessageLogger("WindowsActivityTrackerService");
-            var windowsServiceEventLoggerObserver = new TextMessageEventLoggerObserver(windowsServiceTextLogger);
-            var windowsActivityTrackerService = new WindowsActivityTrackerService(
-                new SessionChangeToWindowsSystemEvent(), 
-                new PowerBroadcastToWindowsSystemEvent(), 
-                new SessionEndedEventArgsToWindowsSystemEventConverter(),
-                new PowerModeChangedEventArgsToWindowsSystemEventConverter(), 
-                new SessionSwitchEventArgsToWindowsSystemEventConverter(), 
-                windowsServiceTextLogger);
-            windowsActivityTrackerService.Subscribe(windowsServiceEventLoggerObserver);
+            var textMessageEventLoggerObserver = new TextMessageEventLoggerObserver(new WindowsServiceMessageLogger(AppConstants.LOGGING_APPLICATION_NAME));
 
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
-            {
-                windowsActivityTrackerService
-            };
-            
-            if (Environment.UserInteractive)
-            {
-                windowsActivityTrackerService.OnStartDebug(null);
-            }
-            else
-            {
-                ServiceBase.Run(ServicesToRun);
-            }
+            var windowsActivityTrackerService = new WindowsActivityTrackerService(new DiCoreServiceModule(), 
+                new DiWindowsServiceModule(), 
+                new ServiceProviderBuilder(),
+                new PowerBroadcastToWindowsSystemEvent(), 
+                new SessionChangeToWindowsSystemEvent(), 
+                new List<IObserver<IWindowsSystemEvent>>(){textMessageEventLoggerObserver});
+
+            WindowsServiceRunner.Instance().Run(new DebuggableServiceBase[] { windowsActivityTrackerService });   
         }
     }
 }

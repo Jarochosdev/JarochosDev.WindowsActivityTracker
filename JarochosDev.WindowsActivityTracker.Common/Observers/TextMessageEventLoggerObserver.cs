@@ -1,5 +1,5 @@
 ﻿using System;
-using JarochosDev.Utilities.Net.NetStandard.Common.Logger;
+using JarochosDev.Utilities.Net.NetStandard.Common.Loggers;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 
 namespace JarochosDev.WindowsActivityTracker.Common.Observers

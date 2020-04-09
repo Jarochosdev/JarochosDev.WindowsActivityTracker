@@ -1,6 +1,5 @@
 using System;
 using JarochosDev.TestUtilities.Net.NetStandard;
-using JarochosDev.Utilities.Net.NetStandard.Common.Proxy;
 using JarochosDev.WindowsActivityTracker.Common.Proxies;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;

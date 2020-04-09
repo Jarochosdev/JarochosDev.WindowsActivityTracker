@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="JarochosDev.TestUtilities.Net.NetStandard" Version="1.0.3" />
-    <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.Common" Version="1.0.2" />
-    <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.ConsoleApp" Version="1.0.2" />
+    <PackageReference Include="JarochosDev.Utilities.Net.NetStandard.Common" Version="1.0.5" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />

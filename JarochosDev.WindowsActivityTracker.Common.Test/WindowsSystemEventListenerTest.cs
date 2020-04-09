@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using JarochosDev.TestUtilities.Net.NetStandard;
-using JarochosDev.Utilities.Net.NetStandard.Common.Converter;
+using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Observers;
 using JarochosDev.WindowsActivityTracker.Common.Proxies;
@@ -12,7 +9,6 @@ using JarochosDev.WindowsActivityTracker.Common.Test.Fakes;
 using JarochosDev.WindowsActivityTracker.Common.Test.Utilities;
 using Microsoft.Win32;
 using Moq;
-using NuGet.Frameworks;
 using NUnit.Framework;
 
 namespace JarochosDev.WindowsActivityTracker.Common.Test
