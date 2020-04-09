@@ -1,16 +1,23 @@
 ﻿using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.WindowsActivityTracker.Common.Models;
+using JarochosDev.WindowsActivityTracker.Common.Utilities;
 using Microsoft.Win32;
 
 namespace JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters
 {
     public class SessionSwitchEventArgsToWindowsSystemEventConverter : IObjectConverter<SessionSwitchEventArgs, IWindowsSystemEvent>
     {
+        public IWindowsSystemEventConstructor WindowsSystemEventConstructor { get; }
+
+        public SessionSwitchEventArgsToWindowsSystemEventConverter(IWindowsSystemEventConstructor windowsSystemEventConstructor)
+        {
+            WindowsSystemEventConstructor = windowsSystemEventConstructor;
+        }
         public IWindowsSystemEvent Convert(SessionSwitchEventArgs sessionSwitchEventArgs)
         {
             var windowsSystemEventType = GetWindowsSystemEventType(sessionSwitchEventArgs.Reason);
             var eventMessage = $"SessionSwitchEvent:{sessionSwitchEventArgs.Reason}";
-            return new WindowsSystemEvent(eventMessage, windowsSystemEventType);
+            return WindowsSystemEventConstructor.Construct(eventMessage, windowsSystemEventType);
         }
 
         private WindowsSystemEventType GetWindowsSystemEventType(SessionSwitchReason reason)

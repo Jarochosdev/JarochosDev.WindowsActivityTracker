@@ -1,16 +1,24 @@
 ﻿using System.ServiceProcess;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
+using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
+using JarochosDev.WindowsActivityTracker.Common.Utilities;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters
 {
     public class SessionChangeToWindowsSystemEvent : IObjectConverter<SessionChangeDescription, IWindowsSystemEvent>
     {
+        public IWindowsSystemEventConstructor WindowsSystemEventConstructor { get; }
+
+        public SessionChangeToWindowsSystemEvent(IWindowsSystemEventConstructor windowsSystemEventConstructor)
+        {
+            WindowsSystemEventConstructor = windowsSystemEventConstructor;
+        }
         public IWindowsSystemEvent Convert(SessionChangeDescription item)
         {
             var windowsSystemEventType = GetWindowsSystemEventType(item.Reason);
             var eventMessage = $"SessionChangeEvent:{item.Reason}";
-            return new WindowsSystemEvent(eventMessage, windowsSystemEventType);
+            return WindowsSystemEventConstructor.Construct(eventMessage, windowsSystemEventType);
         }
 
         private WindowsSystemEventType GetWindowsSystemEventType(SessionChangeReason reason)

@@ -1,16 +1,25 @@
 ﻿using System.ServiceProcess;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
+using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
+using JarochosDev.WindowsActivityTracker.Common.Utilities;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters
 {
     public class PowerBroadcastToWindowsSystemEvent : IObjectConverter<PowerBroadcastStatus, IWindowsSystemEvent>
     {
+        public IWindowsSystemEventConstructor WindowsSystemEventConstructor { get; }
+
+        public PowerBroadcastToWindowsSystemEvent(IWindowsSystemEventConstructor windowsSystemEventConstructor)
+        {
+            WindowsSystemEventConstructor = windowsSystemEventConstructor;
+        }
+
         public IWindowsSystemEvent Convert(PowerBroadcastStatus item)
         {
             var windowsSystemEventType = GetWindowsSystemEventType(item);
             var eventMessage = $"PowerBroadcastEvent:{item}";
-            return new WindowsSystemEvent(eventMessage, windowsSystemEventType);
+            return WindowsSystemEventConstructor.Construct(eventMessage, windowsSystemEventType);
         }
 
         private WindowsSystemEventType GetWindowsSystemEventType(PowerBroadcastStatus item)

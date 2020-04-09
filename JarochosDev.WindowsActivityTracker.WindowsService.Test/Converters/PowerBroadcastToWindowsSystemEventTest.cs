@@ -2,6 +2,8 @@
 using JarochosDev.WindowsActivityTracker.WindowsService.Converters;
 using NUnit.Framework;
 using System.ServiceProcess;
+using JarochosDev.WindowsActivityTracker.Common.Utilities;
+using Moq;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.Test.Converters
 {
@@ -19,12 +21,19 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test.Converters
         [TestCase(PowerBroadcastStatus.QuerySuspendFailed, WindowsSystemEventType.StartWorking)]
         public void Test_Convert_Returns_WindowsSystemEvent(PowerBroadcastStatus powerBroadcastStatus, WindowsSystemEventType windowsSystemEventTypeExpected)
         {
-            var powerBroadcastToWindowsSystemEvent = new PowerBroadcastToWindowsSystemEvent();
+            var mockWindowsSystemEventConstructor = new Mock<IWindowsSystemEventConstructor>();
+            var powerBroadcastToWindowsSystemEvent = new PowerBroadcastToWindowsSystemEvent(mockWindowsSystemEventConstructor.Object);
+
+            var message = $"PowerBroadcastEvent:{powerBroadcastStatus}";
+
+            var mockWindowsSystemEvent = new Mock<IWindowsSystemEvent>();
+            mockWindowsSystemEventConstructor
+                .Setup(c => c.Construct(message, windowsSystemEventTypeExpected))
+                .Returns(mockWindowsSystemEvent.Object);
 
             var converted = powerBroadcastToWindowsSystemEvent.Convert(powerBroadcastStatus);
 
-            Assert.AreEqual(windowsSystemEventTypeExpected, converted.Type);
-            Assert.AreEqual($"PowerBroadcastEvent:{powerBroadcastStatus}", converted.EventMessage);
+            Assert.AreSame(mockWindowsSystemEvent.Object, converted);
         }
     }
 }

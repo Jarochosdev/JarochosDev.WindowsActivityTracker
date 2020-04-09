@@ -1,6 +1,8 @@
 ﻿using JarochosDev.WindowsActivityTracker.Common.Models;
+using JarochosDev.WindowsActivityTracker.Common.Utilities;
 using JarochosDev.WindowsActivityTracker.Common.WindowsSystemEventConverters;
 using Microsoft.Win32;
+using Moq;
 using NUnit.Framework;
 
 namespace JarochosDev.WindowsActivityTracker.Common.Test.WindowsSystemEventConverters
@@ -12,12 +14,18 @@ namespace JarochosDev.WindowsActivityTracker.Common.Test.WindowsSystemEventConve
         [TestCase(SessionEndReasons.SystemShutdown, WindowsSystemEventType.StopWorking)]
         public void Test_Convert_Returns_WindowsSystemEvent(SessionEndReasons reason, WindowsSystemEventType windowsSystemEventTypeExpected)
         {
-            var sessionEndedEventArgsToWindowsSystemEventConverter = new SessionEndedEventArgsToWindowsSystemEventConverter();
+            var mockWindowsSystemEventConstructor = new Mock<IWindowsSystemEventConstructor>();
+            var sessionEndedEventArgsToWindowsSystemEventConverter = new SessionEndedEventArgsToWindowsSystemEventConverter(mockWindowsSystemEventConstructor.Object);
+
+            var mockWindowsSystemEvent = new Mock<IWindowsSystemEvent>();
+
+            mockWindowsSystemEventConstructor
+                .Setup(c => c.Construct($"SessionEndedEvent:{reason}", windowsSystemEventTypeExpected))
+                .Returns(mockWindowsSystemEvent.Object);
 
             var converted = sessionEndedEventArgsToWindowsSystemEventConverter.Convert(new SessionEndedEventArgs(reason));
 
-            Assert.AreEqual(windowsSystemEventTypeExpected, converted.Type);
-            Assert.AreEqual($"SessionEndedEvent:{reason}", converted.EventMessage);
+            Assert.AreEqual(mockWindowsSystemEvent.Object, converted);
         }
     }
 }

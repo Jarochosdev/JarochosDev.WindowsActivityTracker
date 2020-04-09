@@ -1,40 +1,20 @@
 ﻿using System;
 using System.Management;
+using JarochosDev.Utilities.Net.NetStandard.Common.Proxies;
+using JarochosDev.WindowsActivityTracker.Common.Utilities;
 
-namespace JarochosDev.WindowsActivityTracker.WindowsService.Utils
+namespace JarochosDev.WindowsActivityTracker.WindowsService.Utilities
 {
-    public class Machine
+    public class WindowsServiceUserNameExtractor : IUserNameExtractor
     {
-        private static Object _classLocker = new Object();
-        private static Machine _machine;
-
-        private Machine()
+        public string GetUserName()
         {
-        } // end private Machine()
-
-        public static Machine Instance()
-        {
-            if (_machine == null)
+            var username = ProxyEnvironment.Instance().UserName;
+            if (!username.Equals("SYSTEM", StringComparison.CurrentCultureIgnoreCase))
             {
-                lock (_classLocker)
-                {
-                    if (_machine == null)
-                    {
-                        _machine = new Machine();
-                    }
-                }
-            }
-            return _machine;
-        } // end public static Machine Instance()
-
-        public String GetUsername()
-        {
-            if (!Environment.UserName.Equals("SYSTEM", StringComparison.CurrentCultureIgnoreCase))
-            {
-                return Environment.UserName;
+                return username;
             }
 
-            string username = null;
             try
             {
                 // Define WMI scope to look for the Win32_ComputerSystem object
@@ -64,6 +44,6 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Utils
                 username = "SYSTEM";
             }
             return username;
-        } // end String GetUsername()
-    } // end class Machine
+        }
+    }
 }
