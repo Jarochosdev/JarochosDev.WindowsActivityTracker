@@ -1,14 +1,19 @@
-﻿using System;
-using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
+﻿using JarochosDev.WindowsActivityTracker.Common.DependencyInjection;
+using JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner;
+using JarochosDev.WindowsActivityTracker.WindowsService.FormObjects;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.DependencyInjection
 {
-    internal class DiWindowsServiceModule: IServiceModule
+    public class DiWindowsServiceModule: DiCoreServiceModule
     {
-        public void Register(IServiceCollection serviceCollection)
+        public override void Register(IServiceCollection serviceCollection)
         {
-            throw new NotImplementedException();
+            serviceCollection
+                .AddScoped<IThreadFormApplicationRunnerProcess, ThreadFormApplicationRunnerProcess>()
+                .AddScoped<WindowsSystemEventListenerForm>();
+
+            base.Register(serviceCollection);
         }
     }
 }

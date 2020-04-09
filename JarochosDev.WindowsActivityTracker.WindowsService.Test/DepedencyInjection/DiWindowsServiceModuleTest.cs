@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using JarochosDev.Utilities.Net.NetStandard.Common.Loggers;
-using JarochosDev.WindowsActivityTracker.Common.DependencyInjection;
+using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Observers;
+using JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner;
+using JarochosDev.WindowsActivityTracker.WindowsService.DependencyInjection;
+using JarochosDev.WindowsActivityTracker.WindowsService.FormObjects;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace JarochosDev.WindowsActivityTracker.Common.Test.DependencyInjection
+namespace JarochosDev.WindowsActivityTracker.WindowsService.Test.DepedencyInjection
 {
-    class DiServiceModuleTest
+    class DiWindowsServiceModuleTest
     {
         private ServiceProvider _buildServiceProvider;
 
@@ -18,25 +21,24 @@ namespace JarochosDev.WindowsActivityTracker.Common.Test.DependencyInjection
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
-            var diServiceModule = new DiCoreServiceModule();
+            var diServiceModule = new DiWindowsServiceModule();
             diServiceModule.Register(serviceCollection);
             _buildServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
         [Test]
-        public void Test_Module_Register_WindowsSystemEventServiceManager_With_Dependencies()
+        public void Test_Module_Register_ThreadFormApplicationRunnerProcess_With_Dependencies()
         {
-            var windowsSystemEventListener = _buildServiceProvider.GetService<IWindowsSystemEventServiceManager>();
-            Assert.IsNotNull(windowsSystemEventListener);
-            Assert.IsInstanceOf<WindowsSystemEventServiceManager>(windowsSystemEventListener);
-            var windowsSystemEventServiceManager = windowsSystemEventListener as WindowsSystemEventServiceManager;
+            var threadFormApplicationRunnerProcess = _buildServiceProvider.GetService<IThreadFormApplicationRunnerProcess>();
+            Assert.IsNotNull(threadFormApplicationRunnerProcess);
+            Assert.IsInstanceOf<ThreadFormApplicationRunnerProcess>(threadFormApplicationRunnerProcess);
+            var formApplicationRunnerProcess = threadFormApplicationRunnerProcess as ThreadFormApplicationRunnerProcess;
+            Assert.IsInstanceOf<WindowsSystemEventListenerForm>(formApplicationRunnerProcess.Form);
+            var windowsSystemEventListenerForm = formApplicationRunnerProcess.Form as WindowsSystemEventListenerForm;
+            Assert.IsInstanceOf<WindowsSystemEventServiceManager>(windowsSystemEventListenerForm.WindowsSystemEventServiceManager);
+            var windowsSystemEventServiceManager = windowsSystemEventListenerForm.WindowsSystemEventServiceManager as WindowsSystemEventServiceManager;
             AssertObservers(windowsSystemEventServiceManager.Observers);
-        }
 
-        [Test]
-        public void Test_Module_Register_A_ListOfObservers_With_Dependencies()
-        {
-            AssertObservers(_buildServiceProvider.GetService<IEnumerable<IObserver<IWindowsSystemEvent>>>());
         }
 
         private static void AssertObservers(IEnumerable<IObserver<IWindowsSystemEvent>> observers)

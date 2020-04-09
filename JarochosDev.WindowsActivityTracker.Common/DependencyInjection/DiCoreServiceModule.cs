@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
 using JarochosDev.Utilities.Net.NetStandard.Common.Loggers;
@@ -14,7 +13,7 @@ namespace JarochosDev.WindowsActivityTracker.Common.DependencyInjection
 {
     public class DiCoreServiceModule : IServiceModule
     {
-        public void Register(IServiceCollection serviceCollection)
+        public virtual void Register(IServiceCollection serviceCollection)
         {
             var observers = new List<IObserver<IWindowsSystemEvent>>()
             {

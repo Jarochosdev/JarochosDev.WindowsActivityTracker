@@ -1,6 +1,6 @@
 ﻿namespace JarochosDev.WindowsActivityTracker.WindowsService
 {
-    partial class WindowsActivityTrackerService
+    public partial class WindowsActivityTrackerService
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,11 +29,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            this.ServiceName = "WindowsActivityTrackerService";
-            this.CanHandlePowerEvent = true;
-            this.CanHandleSessionChangeEvent = true;
-            this.CanShutdown = true;
-            this.AutoLog = false;
         }
 
         #endregion

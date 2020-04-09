@@ -4,7 +4,6 @@ using JarochosDev.TestUtilities.Net.NetStandard;
 using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
 using JarochosDev.Utilities.Net.NetStandard.Common.Services;
 using JarochosDev.WindowsActivityTracker.Common;
-using JarochosDev.WindowsActivityTracker.Common.Models;
 using Moq;
 using NUnit.Framework;
 
@@ -46,8 +45,7 @@ namespace JarochosDev.WindowsActivityTracker.Console.Test
 
             UnitTestUtilities
                 .Helper
-                .RunProtectedMethod<ConsoleWindowsActivityTrackerService>
-                    (_consoleWindowsActivityTrackerService, "StartService", mockServiceProvider.Object);
+                .RunProtectedMethod(_consoleWindowsActivityTrackerService, "StartService", mockServiceProvider.Object);
 
             mockWindowsSystemEventServiceManager.Verify(e=>e.Start(), Times.Once);
             mockWindowsSystemEventServiceManager.Verify(l => l.Stop(), Times.Never);
@@ -65,8 +63,7 @@ namespace JarochosDev.WindowsActivityTracker.Console.Test
 
             UnitTestUtilities
                 .Helper
-                .RunProtectedMethod<ConsoleWindowsActivityTrackerService>
-                    (_consoleWindowsActivityTrackerService, "StartService", mockServiceProvider.Object);
+                .RunProtectedMethod(_consoleWindowsActivityTrackerService, "StartService", mockServiceProvider.Object);
 
             mockWindowsSystemEventServiceManager.Verify(e => e.Start(), Times.Once);
             mockWindowsSystemEventServiceManager.Verify(l => l.Stop(), Times.Never);
@@ -74,8 +71,7 @@ namespace JarochosDev.WindowsActivityTracker.Console.Test
 
             UnitTestUtilities
                 .Helper
-                .RunProtectedMethod<ConsoleWindowsActivityTrackerService>
-                    (_consoleWindowsActivityTrackerService, "StopService", mockServiceProvider.Object);
+                .RunProtectedMethod(_consoleWindowsActivityTrackerService, "StopService", mockServiceProvider.Object);
 
             mockWindowsSystemEventServiceManager.Verify(e => e.Start(), Times.Never);
             mockWindowsSystemEventServiceManager.Verify(l => l.Stop(), Times.Once);

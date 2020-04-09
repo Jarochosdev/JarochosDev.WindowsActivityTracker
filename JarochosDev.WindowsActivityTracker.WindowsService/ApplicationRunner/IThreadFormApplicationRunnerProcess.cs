@@ -2,7 +2,7 @@
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner
 {
-    public interface IThreadApplicationRunnerProcess:IStartableProcess
+    public interface IThreadFormApplicationRunnerProcess:IStartableProcess
     {
     }
 }

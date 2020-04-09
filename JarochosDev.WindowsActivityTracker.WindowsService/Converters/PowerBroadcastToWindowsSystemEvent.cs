@@ -20,7 +20,6 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters
                 case PowerBroadcastStatus.BatteryLow:
                 case PowerBroadcastStatus.OemEvent:
                 case PowerBroadcastStatus.PowerStatusChange:
-                case PowerBroadcastStatus.QuerySuspendFailed:
                     return WindowsSystemEventType.None;
                 case PowerBroadcastStatus.QuerySuspend:
                 case PowerBroadcastStatus.Suspend:
@@ -28,6 +27,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Converters
                 case PowerBroadcastStatus.ResumeAutomatic:
                 case PowerBroadcastStatus.ResumeCritical:
                 case PowerBroadcastStatus.ResumeSuspend:
+                case PowerBroadcastStatus.QuerySuspendFailed:
                     return WindowsSystemEventType.StartWorking;
                 default:
                     return WindowsSystemEventType.NotImplemented;

@@ -5,11 +5,11 @@ using JarochosDev.WindowsActivityTracker.WindowsService.FormObjects;
 
 namespace JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner
 {
-    public class ThreadFormApplicationRunnerProcess : IThreadApplicationRunnerProcess
+    public class ThreadFormApplicationRunnerProcess : IThreadFormApplicationRunnerProcess
     {
         public Form Form { get; }
 
-        public ThreadFormApplicationRunnerProcess(Form form)
+        public ThreadFormApplicationRunnerProcess(WindowsSystemEventListenerForm form)
         {
             Form = form;
         }
