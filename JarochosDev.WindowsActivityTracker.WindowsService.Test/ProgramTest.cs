@@ -38,6 +38,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
                     Assert.IsInstanceOf<WindowsServiceMessageLogger>(textMessageEventLoggerObserver.MessageLogger);
                     var windowsServiceMessageLogger = textMessageEventLoggerObserver.MessageLogger as WindowsServiceMessageLogger;
                     Assert.AreEqual(AppConstants.LOGGING_APPLICATION_NAME, windowsServiceMessageLogger.SourceName);
+                    Assert.AreEqual(AppConstants.LOGGING_APPLICATION_NAME, servicePassed.ElementAt(0).ServiceName);
                 });
 
             Program.Main();

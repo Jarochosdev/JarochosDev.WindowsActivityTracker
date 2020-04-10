@@ -4,6 +4,7 @@ using System.ServiceProcess;
 using JarochosDev.TestUtilities.Net.NetStandard;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
+using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner;
 using Moq;
@@ -48,7 +49,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
             Assert.AreSame(_mockSessionChangeToWindowsSystemEvent.Object, _windowsActivityTrackerService.SessionChangeToWindowsSystemEvent);
             Assert.AreSame(_windowsSystemEventObservers, _windowsActivityTrackerService.WindowsSystemEventObservers);
 
-            Assert.AreEqual("WindowsActivityTrackerService", _windowsActivityTrackerService.ServiceName);
+            Assert.AreEqual(AppConstants.LOGGING_APPLICATION_NAME, _windowsActivityTrackerService.ServiceName);
             Assert.AreEqual(true, _windowsActivityTrackerService.CanHandlePowerEvent);
             Assert.AreEqual(true, _windowsActivityTrackerService.CanHandleSessionChangeEvent);
             Assert.AreEqual(true, _windowsActivityTrackerService.CanShutdown);

@@ -25,8 +25,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
                 new PowerBroadcastToWindowsSystemEvent(windowsSystemEventConstructor), 
                 new SessionChangeToWindowsSystemEvent(windowsSystemEventConstructor), 
                 new List<IObserver<IWindowsSystemEvent>>(){textMessageEventLoggerObserver});
-
-            WindowsServiceRunner.Instance().Run(new DebuggableServiceBase[] { windowsActivityTrackerService });   
+            WindowsServiceRunner.Instance().Run(new DebuggableServiceBase[] { windowsActivityTrackerService });  
         }
     }
 }

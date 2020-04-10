@@ -4,6 +4,7 @@ using System.ServiceProcess;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
 using JarochosDev.Utilities.Net.NetStandard.Common.WindowsServices;
+using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner;
 
@@ -32,7 +33,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
             SessionChangeToWindowsSystemEvent = sessionChangeToWindowsSystemEvent;
             WindowsSystemEventObservers = windowsSystemEventObservers;
 
-            this.ServiceName = "WindowsActivityTrackerService";
+            this.ServiceName = AppConstants.LOGGING_APPLICATION_NAME;
             this.CanHandlePowerEvent = true;
             this.CanHandleSessionChangeEvent = true;
             this.CanShutdown = true;
@@ -77,7 +78,6 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
 
         private void NotifyObservers(IWindowsSystemEvent windowsSystemEvent)
         {
-            //windowsSystemEvent.UserName = Machine.Instance().GetUsername();
             foreach (var windowsSystemEventObserver in WindowsSystemEventObservers)
             {
                 windowsSystemEventObserver.OnNext(windowsSystemEvent);
