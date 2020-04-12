@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.ServiceProcess;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
 using JarochosDev.Utilities.Net.NetStandard.Common.DependencyInjection;
@@ -8,7 +9,7 @@ using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner;
 
-
+[assembly:InternalsVisibleTo("JarochosDev.WindowsActivityTracker.WindowsService.Test")]
 namespace JarochosDev.WindowsActivityTracker.WindowsService
 {
     public partial class WindowsActivityTrackerService : DebuggableServiceBase
@@ -19,19 +20,17 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
         public IServiceProviderBuilder ServiceProviderBuilder { get; }
         public IObjectConverter<PowerBroadcastStatus, IWindowsSystemEvent> PowerBroadcastToWindowsSystemEvent { get; }
         public IObjectConverter<SessionChangeDescription, IWindowsSystemEvent> SessionChangeToWindowsSystemEvent { get; }
-        public IEnumerable<IObserver<IWindowsSystemEvent>> WindowsSystemEventObservers { get; }
+        internal IEnumerable<IObserver<IWindowsSystemEvent>> WindowsSystemEventObservers { get; private set; }
 
         public WindowsActivityTrackerService(IServiceModule windowsServiceModule, 
             IServiceProviderBuilder serviceProviderBuilder,
             IObjectConverter<PowerBroadcastStatus, IWindowsSystemEvent> powerBroadcastToWindowsSystemEvent,
-            IObjectConverter<SessionChangeDescription, IWindowsSystemEvent> sessionChangeToWindowsSystemEvent, 
-            IEnumerable<IObserver<IWindowsSystemEvent>> windowsSystemEventObservers)
+            IObjectConverter<SessionChangeDescription, IWindowsSystemEvent> sessionChangeToWindowsSystemEvent)
         {
             WindowsServiceModule = windowsServiceModule;
             ServiceProviderBuilder = serviceProviderBuilder;
             PowerBroadcastToWindowsSystemEvent = powerBroadcastToWindowsSystemEvent;
             SessionChangeToWindowsSystemEvent = sessionChangeToWindowsSystemEvent;
-            WindowsSystemEventObservers = windowsSystemEventObservers;
 
             this.ServiceName = AppConstants.LOGGING_APPLICATION_NAME;
             this.CanHandlePowerEvent = true;
@@ -44,6 +43,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService
         {
             var serviceProvider = ServiceProviderBuilder.AddServiceModule(WindowsServiceModule).Build();
             _process = serviceProvider.GetService(typeof(IThreadFormApplicationRunnerProcess)) as IThreadFormApplicationRunnerProcess;
+            WindowsSystemEventObservers = serviceProvider.GetService(typeof(IEnumerable<IObserver<IWindowsSystemEvent>>)) as IEnumerable<IObserver<IWindowsSystemEvent>>;
             _process.Start();
         }
 

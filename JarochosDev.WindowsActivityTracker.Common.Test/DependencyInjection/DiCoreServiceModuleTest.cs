@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using JarochosDev.Utilities.Net.NetStandard.Common.Loggers;
+using JarochosDev.WindowsActivityTracker.Common.DataAccess;
 using JarochosDev.WindowsActivityTracker.Common.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Observers;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NUnit.Framework;
 
 namespace JarochosDev.WindowsActivityTracker.Common.Test.DependencyInjection
 {
-    class DiServiceModuleTest
+    class DiCoreServiceModuleTest
     {
         private ServiceProvider _buildServiceProvider;
+        private Mock<IDatabaseConnectionStringConfiguration> _mockDatabaseConnectionStringConfiguration;
 
         [SetUp]
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
-            var diServiceModule = new DiCoreServiceModule();
+            _mockDatabaseConnectionStringConfiguration = new Mock<IDatabaseConnectionStringConfiguration>();
+            var diServiceModule = new DiCoreServiceModule(_mockDatabaseConnectionStringConfiguration.Object);
             diServiceModule.Register(serviceCollection);
             _buildServiceProvider = serviceCollection.BuildServiceProvider();
         }
@@ -39,15 +43,21 @@ namespace JarochosDev.WindowsActivityTracker.Common.Test.DependencyInjection
             AssertObservers(_buildServiceProvider.GetService<IEnumerable<IObserver<IWindowsSystemEvent>>>());
         }
 
-        private static void AssertObservers(IEnumerable<IObserver<IWindowsSystemEvent>> observers)
+        private void AssertObservers(IEnumerable<IObserver<IWindowsSystemEvent>> observers)
         {
             Assert.IsNotNull(observers);
-            Assert.AreEqual(1, observers.Count());
+            Assert.AreEqual(2, observers.Count());
+            
             Assert.IsInstanceOf<TextMessageEventLoggerObserver>(observers.ElementAt(0));
             var textMessageEventLoggerObserver = observers.ElementAt(0) as TextMessageEventLoggerObserver;
             Assert.IsInstanceOf<WindowsServiceMessageLogger>(textMessageEventLoggerObserver.MessageLogger);
             var windowsServiceMessageLogger = textMessageEventLoggerObserver.MessageLogger as WindowsServiceMessageLogger;
             Assert.AreEqual(AppConstants.LOGGING_APPLICATION_NAME, windowsServiceMessageLogger.SourceName);
+
+            Assert.IsInstanceOf<DatabaseMessageEventLoggerObserver>(observers.ElementAt(1));
+            var databaseMessageEventLoggerObserver = observers.ElementAt(1) as DatabaseMessageEventLoggerObserver;
+            Assert.AreSame(textMessageEventLoggerObserver.MessageLogger, databaseMessageEventLoggerObserver.MessageLogger);
+            Assert.AreSame(_mockDatabaseConnectionStringConfiguration.Object, databaseMessageEventLoggerObserver.DatabaseConnectionStringConfiguration);
         }
     }
 }

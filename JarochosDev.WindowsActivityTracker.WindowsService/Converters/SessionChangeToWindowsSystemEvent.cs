@@ -1,6 +1,5 @@
 ﻿using System.ServiceProcess;
 using JarochosDev.Utilities.Net.NetStandard.Common.Converters;
-using JarochosDev.WindowsActivityTracker.Common;
 using JarochosDev.WindowsActivityTracker.Common.Models;
 using JarochosDev.WindowsActivityTracker.Common.Utilities;
 

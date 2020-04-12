@@ -2,6 +2,7 @@ using System.Linq;
 using JarochosDev.TestUtilities.Net.NetStandard;
 using JarochosDev.Utilities.Net.NetStandard.Common.Processes;
 using JarochosDev.Utilities.Net.NetStandard.Common.Services;
+using JarochosDev.WindowsActivityTracker.Common.DataAccess;
 using JarochosDev.WindowsActivityTracker.Common.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Console.Test.Utilities;
 using Moq;
@@ -26,7 +27,10 @@ namespace JarochosDev.WindowsActivityTracker.Console.Test
                     var consoleWindowsActivityTrackerService = servicePassed as ConsoleWindowsActivityTrackerService;
 
                     Assert.AreEqual(1, consoleWindowsActivityTrackerService.ServiceModules.Count);
-                    Assert.IsInstanceOf(typeof(DiCoreServiceModule), consoleWindowsActivityTrackerService.ServiceModules.ElementAt(0));
+                    var serviceModule = consoleWindowsActivityTrackerService.ServiceModules.ElementAt(0);
+                    Assert.IsInstanceOf(typeof(DiCoreServiceModule), serviceModule);
+                    var diCoreServiceModule = serviceModule as DiCoreServiceModule;
+                    Assert.IsInstanceOf<EnvironmentDatabaseConfiguration>(diCoreServiceModule.DatabaseConnectionStringConfiguration);
                 });
 
             Program.Main(null);

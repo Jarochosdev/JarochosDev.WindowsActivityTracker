@@ -2,6 +2,7 @@
 {
     public static class AppConstants
     {
-        public const string LOGGING_APPLICATION_NAME = "Windows Activity Tracker";
+        public static string WINDOWS_ACTIVITY_TRACKER_CONNECTION_STRING = "WindowsActivityTrackerConnectionString";
+        public static string LOGGING_APPLICATION_NAME = "Windows Activity Tracker";
     }
 }

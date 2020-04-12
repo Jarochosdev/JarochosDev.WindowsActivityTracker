@@ -1,4 +1,4 @@
-﻿using JarochosDev.WindowsActivityTracker.Common;
+﻿using JarochosDev.WindowsActivityTracker.Common.DataAccess;
 using JarochosDev.WindowsActivityTracker.Common.DependencyInjection;
 using JarochosDev.WindowsActivityTracker.Common.Utilities;
 using JarochosDev.WindowsActivityTracker.WindowsService.ApplicationRunner;
@@ -10,6 +10,9 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.DependencyInjection
 {
     public class DiWindowsServiceModule: DiCoreServiceModule
     {
+        public DiWindowsServiceModule(IDatabaseConnectionStringConfiguration databaseConnectionStringConfiguration) : base(databaseConnectionStringConfiguration)
+        {
+        }
         public override void Register(IServiceCollection serviceCollection)
         {
             base.Register(serviceCollection);

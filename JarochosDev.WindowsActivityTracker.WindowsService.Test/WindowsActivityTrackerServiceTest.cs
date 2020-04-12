@@ -36,8 +36,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
             _windowsActivityTrackerService = new WindowsActivityTrackerService(_mockWindowsServiceModule.Object,
                 _mockServiceProviderBuilder.Object,
                 _mockPowerBroadcastToWindowsSystemEvent.Object,
-                _mockSessionChangeToWindowsSystemEvent.Object,
-                _windowsSystemEventObservers);
+                _mockSessionChangeToWindowsSystemEvent.Object);
         }
 
         [Test]
@@ -47,8 +46,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
             Assert.AreSame(_mockServiceProviderBuilder.Object, _windowsActivityTrackerService.ServiceProviderBuilder);
             Assert.AreSame(_mockPowerBroadcastToWindowsSystemEvent.Object, _windowsActivityTrackerService.PowerBroadcastToWindowsSystemEvent);
             Assert.AreSame(_mockSessionChangeToWindowsSystemEvent.Object, _windowsActivityTrackerService.SessionChangeToWindowsSystemEvent);
-            Assert.AreSame(_windowsSystemEventObservers, _windowsActivityTrackerService.WindowsSystemEventObservers);
-
+        
             Assert.AreEqual(AppConstants.LOGGING_APPLICATION_NAME, _windowsActivityTrackerService.ServiceName);
             Assert.AreEqual(true, _windowsActivityTrackerService.CanHandlePowerEvent);
             Assert.AreEqual(true, _windowsActivityTrackerService.CanHandleSessionChangeEvent);
@@ -57,7 +55,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
         }
 
         [Test]
-        public void Test_OnStart_Create_ServiceProvider_Get_ThreadApplication_And_Started()
+        public void Test_OnStart_Create_ServiceProvider_Get_ThreadApplication_And_Started_And_GetObservers()
         {
             _mockServiceProviderBuilder
                 .Setup(b => b.AddServiceModule(_mockWindowsServiceModule.Object))
@@ -71,10 +69,20 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
             mockServiceProvider
                 .Setup(p => p.GetService(typeof(IThreadFormApplicationRunnerProcess)))
                 .Returns(mockThreadFormApplicationRunner.Object);
+            
+            var observers = new List<IObserver<IWindowsSystemEvent>>() { _mockObserver1.Object, _mockObserver2.Object };
+            mockServiceProvider
+                .Setup(p => p.GetService(typeof(IEnumerable<IObserver<IWindowsSystemEvent>>)))
+                .Returns(observers);
+
 
             UnitTestUtilities.Helper.RunProtectedMethod(_windowsActivityTrackerService, "OnStart");
             mockThreadFormApplicationRunner.Verify(r=>r.Start(), Times.Once);
             mockThreadFormApplicationRunner.Verify(r=>r.Stop(), Times.Never);
+
+            Assert.AreSame(observers, _windowsActivityTrackerService.WindowsSystemEventObservers);
+
+            mockServiceProvider.VerifyAll();
         }
 
         [Test]
@@ -92,6 +100,7 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
             mockServiceProvider
                 .Setup(p => p.GetService(typeof(IThreadFormApplicationRunnerProcess)))
                 .Returns(mockThreadFormApplicationRunner.Object);
+
 
             UnitTestUtilities.Helper.RunProtectedMethod(_windowsActivityTrackerService, "OnStart");
             mockThreadFormApplicationRunner.Reset();
@@ -111,6 +120,10 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
                 .Setup(s => s.Convert(sessionChangeDescription))
                 .Returns(mockWindowsSystemEvent.Object);
 
+            var observers = new List<IObserver<IWindowsSystemEvent>>() { _mockObserver1.Object, _mockObserver2.Object };
+            
+            UnitTestUtilities.Helper.SetProperty(_windowsActivityTrackerService, nameof(WindowsActivityTrackerService.WindowsSystemEventObservers), observers);
+
             UnitTestUtilities.Helper.RunProtectedMethod(
                 _windowsActivityTrackerService,
                 "OnSessionChange",
@@ -129,6 +142,10 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
             _mockPowerBroadcastToWindowsSystemEvent
                 .Setup(s => s.Convert(powerBroadcastStatus))
                 .Returns(mockWindowsSystemEvent.Object);
+
+            var observers = new List<IObserver<IWindowsSystemEvent>>() { _mockObserver1.Object, _mockObserver2.Object };
+            
+            UnitTestUtilities.Helper.SetProperty(_windowsActivityTrackerService, nameof(WindowsActivityTrackerService.WindowsSystemEventObservers), observers);
 
             UnitTestUtilities.Helper.RunProtectedMethod(
                 _windowsActivityTrackerService,
@@ -152,6 +169,10 @@ namespace JarochosDev.WindowsActivityTracker.WindowsService.Test
             _mockObserver2
                 .Setup(o => o.OnNext(It.IsAny<IWindowsSystemEvent>()))
                 .Callback<IWindowsSystemEvent>(systemEventPassed => { windowsSystemEventPassed2 = systemEventPassed; });
+
+            var observers = new List<IObserver<IWindowsSystemEvent>>() { _mockObserver1.Object, _mockObserver2.Object };
+            
+            UnitTestUtilities.Helper.SetProperty(_windowsActivityTrackerService, nameof(WindowsActivityTrackerService.WindowsSystemEventObservers), observers);
 
             UnitTestUtilities.Helper.RunProtectedMethod(
                 _windowsActivityTrackerService,
